@@ -4,7 +4,7 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 
-from bot.config import TELEGRAM_BOT_TOKEN, DATABASE_PATH
+from bot.config import settings
 from bot.db.models import init_db
 from bot.db.repository import Repository
 from bot.handlers import start, tasks, progress, achievements
@@ -20,12 +20,12 @@ logger = logging.getLogger(__name__)
 
 
 async def main() -> None:
-    db = await init_db(DATABASE_PATH)
+    db = await init_db(settings.database_path)
     repo = Repository(db)
     leetcode = LeetCodeClient()
     gpt = GPTService()
 
-    bot = Bot(token=TELEGRAM_BOT_TOKEN)
+    bot = Bot(token=settings.telegram_bot_token)
     dp = Dispatcher(storage=MemoryStorage())
 
     # Register routers

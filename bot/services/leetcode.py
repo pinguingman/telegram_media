@@ -5,7 +5,7 @@ from typing import Any
 
 import aiohttp
 
-from bot.config import LEETCODE_GRAPHQL_URL
+from bot.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +29,7 @@ class LeetCodeClient:
         if variables:
             payload["variables"] = variables
         async with session.post(
-            LEETCODE_GRAPHQL_URL,
+            settings.leetcode_graphql_url,
             json=payload,
             headers={"Content-Type": "application/json"},
         ) as resp:

@@ -6,7 +6,7 @@ from typing import Any
 
 from openai import AsyncOpenAI
 
-from bot.config import OPENAI_API_KEY
+from bot.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +35,7 @@ Rules:
 
 class GPTService:
     def __init__(self) -> None:
-        self.client = AsyncOpenAI(api_key=OPENAI_API_KEY)
+        self.client = AsyncOpenAI(api_key=settings.openai_api_key)
 
     async def suggest_tasks(
         self,

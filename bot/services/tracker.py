@@ -6,7 +6,7 @@ import logging
 from aiogram import Bot
 
 from bot.achievements.definitions import check_achievements
-from bot.config import TRACKER_INTERVAL_SECONDS
+from bot.config import settings
 from bot.db.repository import Repository
 from bot.services.leetcode import LeetCodeClient
 
@@ -15,13 +15,13 @@ logger = logging.getLogger(__name__)
 
 async def run_tracker(bot: Bot, repo: Repository, leetcode: LeetCodeClient) -> None:
     """Background task that polls LeetCode for completed assigned tasks."""
-    logger.info("Tracker started (interval: %ds)", TRACKER_INTERVAL_SECONDS)
+    logger.info("Tracker started (interval: %ds)", settings.tracker_interval_seconds)
     while True:
         try:
             await _poll_completions(bot, repo, leetcode)
         except Exception:
             logger.exception("Tracker poll error")
-        await asyncio.sleep(TRACKER_INTERVAL_SECONDS)
+        await asyncio.sleep(settings.tracker_interval_seconds)
 
 
 async def _poll_completions(

@@ -1,16 +1,19 @@
-import os
 from pathlib import Path
 
-from dotenv import load_dotenv
+from pydantic_settings import BaseSettings
 
-load_dotenv()
 
-TELEGRAM_BOT_TOKEN: str = os.environ["TELEGRAM_BOT_TOKEN"]
-OPENAI_API_KEY: str = os.environ["OPENAI_API_KEY"]
-DATABASE_PATH: str = os.getenv("DATABASE_PATH", "data/bot.db")
+class Settings(BaseSettings):
+    telegram_bot_token: str
+    openai_api_key: str
+    database_path: str = "data/bot.db"
+    leetcode_graphql_url: str = "https://leetcode.com/graphql/"
+    tracker_interval_seconds: int = 300
+
+    model_config = {"env_file": ".env"}
+
+
+settings = Settings()
 
 # Ensure the data directory exists
-Path(DATABASE_PATH).parent.mkdir(parents=True, exist_ok=True)
-
-LEETCODE_GRAPHQL_URL = "https://leetcode.com/graphql/"
-TRACKER_INTERVAL_SECONDS = 300  # 5 minutes
+Path(settings.database_path).parent.mkdir(parents=True, exist_ok=True)
